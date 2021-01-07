@@ -15,6 +15,7 @@ using static RandomizerMod.LogHelper;
 using static RandomizerMod.GiveItemActions;
 using RandomizerMod.SceneChanges;
 using System.Security.Cryptography;
+using HKTranslator;
 
 using Object = UnityEngine.Object;
 
@@ -186,7 +187,7 @@ namespace RandomizerMod
 
         public override string GetVersion()
         {
-            string ver = "3.07LR";
+            string ver = "3.07LRT";
             ver += $"({Math.Abs(MakeAssemblyHash() % 997)})";
 
             int minAPI = 53;
