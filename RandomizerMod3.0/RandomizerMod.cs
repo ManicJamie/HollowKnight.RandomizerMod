@@ -15,6 +15,7 @@ using static RandomizerMod.LogHelper;
 using static RandomizerMod.GiveItemActions;
 using RandomizerMod.SceneChanges;
 using System.Security.Cryptography;
+using HKTranslator;
 
 using Object = UnityEngine.Object;
 

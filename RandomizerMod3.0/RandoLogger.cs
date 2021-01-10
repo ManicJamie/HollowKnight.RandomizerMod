@@ -9,6 +9,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Modding;
 using RandomizerMod.Randomization;
+using HKTranslator;
 
 namespace RandomizerMod
 {
@@ -126,12 +127,12 @@ namespace RandomizerMod
 
                 MakeHelperLists();
 
-                AddToLog($"Current scene: {GameManager.instance.sceneName}");
+                AddToLog($"Current scene: {Translator.TranslateSceneName(GameManager.instance.sceneName)}");
                 if (RandomizerMod.Instance.Settings.RandomizeTransitions)
                 {
                     if (!string.IsNullOrEmpty(RandomizerMod.Instance.LastRandomizedEntrance) && !string.IsNullOrEmpty(RandomizerMod.Instance.LastRandomizedExit))
                     {
-                        AddToLog($"Last randomized transition: {{{RandomizerMod.Instance.LastRandomizedEntrance}}}-->{{{RandomizerMod.Instance.LastRandomizedExit}}}");
+                        AddToLog($"Last randomized transition: {{{Translator.TranslateTransitionName(RandomizerMod.Instance.LastRandomizedEntrance)}}}-->{{{Translator.TranslateTransitionName(RandomizerMod.Instance.LastRandomizedExit)}}}");
                     }
                     else
                     {
@@ -230,10 +231,10 @@ namespace RandomizerMod
 
                     foreach (var room in SceneSortedTransitions)
                     {
-                        AddToLog(Environment.NewLine + room.Key.Replace('_', ' '));
+                        AddToLog(Environment.NewLine + Translator.TranslateSceneName(room.Key));
                         foreach (string transition in room.Value)
                         {
-                            AddToLog(" - " + transition);
+                            AddToLog(" - " + Translator.TranslateTransitionName(transition));
                         }
                     }
                 }
@@ -345,12 +346,12 @@ namespace RandomizerMod
             {
                 string area1 = LogicManager.GetTransitionDef(entrance).areaName.Replace('_', ' ');
                 string area2 = LogicManager.GetTransitionDef(exit).areaName.Replace('_', ' ');
-                message = $"TRANSITION --- {{{entrance}}}-->{{{exit}}}" +
+                message = $"TRANSITION --- {{{Translator.TranslateTransitionName(entrance)}}}-->{{{Translator.TranslateTransitionName(exit)}}}" +
                     $"\n                ({area1} to {area2})";
             }
             else if (RandomizerMod.Instance.Settings.RandomizeRooms)
             {
-                message = $"TRANSITION --- {{{entrance}}}-->{{{exit}}}";
+                message = $"TRANSITION --- {{{Translator.TranslateTransitionName(entrance)}}}-->{{{Translator.TranslateTransitionName(exit)}}}";
             }
 
             LogTracker(message);
@@ -521,7 +522,7 @@ namespace RandomizerMod
                     foreach ((string, string) pair in transitionPlacements)
                     {
                         string room = LogicManager.GetTransitionDef(pair.Item1).sceneName;
-                        roomTransitions[room].Add(pair.Item1 + " --> " + pair.Item2);
+                        roomTransitions[room].Add(Translator.TranslateTransitionName(pair.Item1) + " --> " + Translator.TranslateTransitionName(pair.Item2));
                     }
 
                     AddToLog(Environment.NewLine + "TRANSITIONS");
@@ -529,7 +530,7 @@ namespace RandomizerMod
                     {
                         if (kvp.Value.Count > 0)
                         {
-                            AddToLog(Environment.NewLine + kvp.Key.Replace('_', ' ') + ":");
+                            AddToLog(Environment.NewLine + Translator.TranslateSceneName(kvp.Key) + ":");
                             foreach (string transition in kvp.Value) AddToLog(transition);
                         }
                     }
