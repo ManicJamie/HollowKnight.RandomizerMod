@@ -257,26 +257,23 @@ namespace RandomizerMod.Randomization
             }
         }
 
-        private void FetchEssenceLocations(RandomizerState state, bool concealRandomItems)
+        private void FetchEssenceLocationsFromPool(RandomizerState state, bool concealRandomItems, string pool, bool poolRandomized)
         {
-            essenceLocations = LogicManager.GetItemsByPool("Essence_Boss")
-                .ToDictionary(item => item, item => LogicManager.GetItemDef(item).geo);
-
             switch (state)
             {
                 default:
-                    foreach (string root in LogicManager.GetItemsByPool("Root"))
+                    foreach (string root in LogicManager.GetItemsByPool(pool))
                     {
                         essenceLocations.Add(root, LogicManager.GetItemDef(root).geo);
                     }
                     break;
-                case RandomizerState.InProgress when RandomizerMod.Instance.Settings.RandomizeWhisperingRoots:
-                case RandomizerState.Completed when RandomizerMod.Instance.Settings.RandomizeWhisperingRoots && concealRandomItems:
+                case RandomizerState.InProgress when poolRandomized:
+                case RandomizerState.Completed when poolRandomized && concealRandomItems:
                     break;
-                case RandomizerState.Validating when RandomizerMod.Instance.Settings.RandomizeWhisperingRoots:
+                case RandomizerState.Validating when poolRandomized:
                     foreach (var kvp in ItemManager.nonShopItems)
                     {
-                        if (LogicManager.GetItemDef(kvp.Value).pool == "Root")
+                        if (LogicManager.GetItemDef(kvp.Value).pool == pool)
                         {
                             essenceLocations.Add(kvp.Key, LogicManager.GetItemDef(kvp.Value).geo);
                         }
@@ -285,7 +282,7 @@ namespace RandomizerMod.Randomization
                     {
                         foreach (string item in kvp.Value)
                         {
-                            if (LogicManager.GetItemDef(item).pool == "Root")
+                            if (LogicManager.GetItemDef(item).pool == pool)
                             {
                                 if (!essenceLocations.ContainsKey(kvp.Key))
                                 {
@@ -296,22 +293,22 @@ namespace RandomizerMod.Randomization
                         }
                     }
                     break;
-                case RandomizerState.Completed when RandomizerMod.Instance.Settings.RandomizeWhisperingRoots && !concealRandomItems:
+                case RandomizerState.Completed when poolRandomized && !concealRandomItems:
                     foreach (var pair in RandomizerMod.Instance.Settings.ItemPlacements)
                     {
-                        if (LogicManager.GetItemDef(pair.Item1).pool == "Root" && !LogicManager.ShopNames.Contains(pair.Item2))
+                        if (LogicManager.GetItemDef(pair.Item1).pool == pool && !LogicManager.ShopNames.Contains(pair.Item2))
                         {
                             essenceLocations.Add(pair.Item2, LogicManager.GetItemDef(pair.Item1).geo);
                         }
                     }
                     foreach (string shop in LogicManager.ShopNames)
                     {
-                        if (RandomizerMod.Instance.Settings.ItemPlacements.Any(pair => pair.Item2 == shop && LogicManager.GetItemDef(pair.Item1).pool == "Root"))
+                        if (RandomizerMod.Instance.Settings.ItemPlacements.Any(pair => pair.Item2 == shop && LogicManager.GetItemDef(pair.Item1).pool == pool))
                         {
                             essenceLocations.Add(shop, 0);
                             foreach (var pair in RandomizerMod.Instance.Settings.ItemPlacements)
                             {
-                                if (pair.Item2 == shop && LogicManager.GetItemDef(pair.Item1).pool == "Root")
+                                if (pair.Item2 == shop && LogicManager.GetItemDef(pair.Item1).pool == pool)
                                 {
                                     essenceLocations[shop] += LogicManager.GetItemDef(pair.Item1).geo;
                                 }
@@ -320,6 +317,13 @@ namespace RandomizerMod.Randomization
                     }
                     break;
             }
+        }
+
+        private void FetchEssenceLocations(RandomizerState state, bool concealRandomItems)
+        {
+            essenceLocations = new Dictionary<string, int>();
+            FetchEssenceLocationsFromPool(state, concealRandomItems, "Root", RandomizerMod.Instance.Settings.RandomizeWhisperingRoots);
+            FetchEssenceLocationsFromPool(state, concealRandomItems, "Essence_Boss", RandomizerMod.Instance.Settings.RandomizeBossEssence);
         }
 
         private void FetchFlameLocations(RandomizerState state)

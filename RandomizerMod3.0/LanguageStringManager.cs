@@ -114,6 +114,12 @@ namespace RandomizerMod
                 return Language.Language.GetInternal(key, sheetTitle).Replace("flame", GetLanguageString(brummItem.nameKey, "UI"));
             }
 
+            if (RandomizerMod.Instance.Settings.RandomizeBossEssence && sheetTitle == "Minor NPC" && key.StartsWith("BRETTA_DIARY_"))
+            {
+                var gpzItem = LogicManager.GetItemDef(RandomizerMod.Instance.Settings.GetItemPlacedAt("Boss_Essence-Grey_Prince_Zote"));
+                return Language.Language.GetInternal(key, sheetTitle) + $"<page>The Maiden's Treasure<br>Pondering what to gift her saviour, the damsel thought of the precious {GetLanguageString(gpzItem.nameKey, "UI")} under her room. Though difficult to part with, she had nothing better with which to thank them.";
+            }
+
             if ((key == "JIJI_DOOR_NOKEY" || key == "BATH_HOUSE_NOKEY") && (sheetTitle == "Prompts") 
                 && !PlayerData.instance.openedWaterwaysManhole & PlayerData.instance.simpleKeys > 0 && PlayerData.instance.simpleKeys < 2)
             {

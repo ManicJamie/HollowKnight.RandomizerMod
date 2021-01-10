@@ -125,6 +125,8 @@ namespace RandomizerMod
                 settingsSeed = settingsSeed << 1;
                 if (RandomizerMod.Instance.Settings.RandomizeGrimmkinFlames) settingsSeed += 1;
                 settingsSeed = settingsSeed << 1;
+                if (RandomizerMod.Instance.Settings.RandomizeBossEssence) settingsSeed += 1;
+                settingsSeed = settingsSeed << 1;
                 if (RandomizerMod.Instance.Settings.DuplicateMajorItems) settingsSeed += 1;
                 settingsSeed = settingsSeed << 1;
                 if (RandomizerMod.Instance.Settings.ShadeSkips) settingsSeed += 1;

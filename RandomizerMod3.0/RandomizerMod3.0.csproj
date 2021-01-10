@@ -96,6 +96,7 @@
     <Compile Include="Actions\ChangeShinyIntoLifeblood.cs" />
     <Compile Include="Actions\ChangeShinyIntoSoul.cs" />
     <Compile Include="Actions\ChangeGrimmkinReward.cs" />
+    <Compile Include="Actions\ChangeBossEssenceReward.cs" />
     <Compile Include="BenchHandler.cs" />
     <Compile Include="GiveItemActions.cs" />
     <Compile Include="StartSaveChanges.cs" />

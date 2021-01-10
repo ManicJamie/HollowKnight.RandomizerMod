@@ -26,6 +26,8 @@ namespace RandomizerMod
 
         private static GameObject _jinn;
 
+        private static GameObject _relicGetMsg;
+
         public static GameObject ShinyItem => Object.Instantiate(_shinyItem);
 
         public static GameObject SmallGeo => Object.Instantiate(_smallGeo);
@@ -44,6 +46,8 @@ namespace RandomizerMod
 
         public static GameObject Jinn => Object.Instantiate(_jinn);
 
+        public static GameObject RelicGetMsg => Object.Instantiate(_relicGetMsg);
+
         public static GameObject Grub;
         public static AudioClip[] GrubCry;
 
@@ -51,6 +55,11 @@ namespace RandomizerMod
         {
             _shinyItem = objectsByScene[SceneNames.Tutorial_01]["_Props/Chest/Item/Shiny Item (1)"];
             _shinyItem.name = "Randomizer Shiny";
+
+            PlayMakerFSM shinyFSM = _shinyItem.LocateMyFSM("Shiny Control");
+            _relicGetMsg = Object.Instantiate(shinyFSM.GetState("Trink Flash").GetActionsOfType<SpawnObjectFromGlobalPool>()[1].gameObject.Value);
+            _relicGetMsg.SetActive(false);
+            Object.DontDestroyOnLoad(_relicGetMsg);
 
             HealthManager health = objectsByScene[SceneNames.Tutorial_01]["_Enemies/Crawler 1"].GetComponent<HealthManager>();
             _smallGeo = Object.Instantiate(

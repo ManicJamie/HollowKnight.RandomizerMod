@@ -262,6 +262,12 @@ namespace RandomizerMod
             set => SetBool(value);
         }
 
+        public bool RandomizeBossEssence
+        {
+            get => GetBool(false);
+            set => SetBool(value);
+        }
+
         public bool DuplicateMajorItems
         {
             get => GetBool(false);

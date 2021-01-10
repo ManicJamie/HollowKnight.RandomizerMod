@@ -111,6 +111,11 @@ namespace RandomizerMod.Actions
                     Actions.Add(new ChangeGrimmkinReward(oldItem.sceneName, oldItem.objectName, oldItem.fsmName, newItem.nameKey, newItem.shopSpriteKey, newItem.action, newItemName, location));
                     continue;
                 }
+                else if (oldItem.pool == "Essence_Boss")
+                {
+                    Actions.Add(new ChangeBossEssenceReward(oldItem.sceneName, oldItem.objectName, oldItem.fsmName, newItem.nameKey, newItem.shopSpriteKey, newItem.action, newItemName, location));
+                    continue;
+                }
 
                 // Dream nail needs a special case
                 if (location == "Dream_Nail")
