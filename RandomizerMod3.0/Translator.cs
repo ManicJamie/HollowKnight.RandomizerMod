@@ -12,7 +12,7 @@ namespace RandomizerMod
         private static Dictionary<string, string> RevertDict = new Dictionary<string, string>();
         private static XmlDocument xml;
         private static bool DictActive;
-        private static bool ReverseDictExists;
+        private const bool ReverseDictExists = false; // Change if you wish to reverse translation in your application.
 
         /// <summary>
         /// Creates dictionary/ies for translation from file in saves folder.
@@ -20,8 +20,6 @@ namespace RandomizerMod
         /// </summary>
         public static void Initialize()
         {
-            ReverseDictExists = false; // Change if you wish to reverse translation.
-
             DictActive = LoadXML();
             if (DictActive)
             {
@@ -37,11 +35,12 @@ namespace RandomizerMod
         {
             if (!File.Exists(Path.Combine(Application.persistentDataPath, "TranslatorDictionary.xml")))
             {
-                Modding.Logger.Log("XML not found. Please place TranslatorDictionary.xml into your saves folder.");
+                LogHelper.Log("XML not found. Please place TranslatorDictionary.xml into your saves folder.");
                 return false;
             }
             xml = new XmlDocument();
             xml.Load(Path.Combine(Application.persistentDataPath, "TranslatorDictionary.xml"));
+            LogHelper.Log("Translation XML loaded.");
             return true;
         }
 
